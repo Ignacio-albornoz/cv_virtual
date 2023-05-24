@@ -1,10 +1,17 @@
 package com.ignacio_albornoz.cv_virtual.models;
 
+import com.ignacio_albornoz.cv_virtual.repositories.CourseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Entity
-@Table(name = "course")
+@Table(name = "courses")
 public class CourseModel {
 
     @Id
@@ -12,16 +19,29 @@ public class CourseModel {
     @Column(unique = true, nullable = false)
     private Long id;
 
+    @ManyToMany()
+    @JoinTable(
+            name = "courses_categories",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<CategoriesModel> categories = new HashSet<>();
+
+    @Column(unique = true, nullable = false)
     private String title;
     private String description;
     private Integer duration;
-    @Column(name = "start_date")
-    private Date startDate;
-    @Column(name = "finished_date")
-    private Date finishedDate;
+    @Column(name = "start_year")
+    private Integer startYear;
+    @Column(name = "start_month")
+    private Integer startMonth;
+    @Column(name = "finished_year")
+    private Integer finishedYear;
+    @Column(name = "finished_month")
+    private Integer finishedMonth;
     private String establishment;
     private String technologies;
-    private String category;
+
+    /*Getters & Setters*/
 
     public Long getId() {
         return id;
@@ -43,22 +63,6 @@ public class CourseModel {
         this.description = description;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getFinishedDate() {
-        return finishedDate;
-    }
-
-    public void setFinishedDate(Date finishedDate) {
-        this.finishedDate = finishedDate;
-    }
-
     public String getEstablishment() {
         return establishment;
     }
@@ -67,27 +71,88 @@ public class CourseModel {
         this.establishment = establishment;
     }
 
-    public String getTechnologies() {
-        return technologies;
-    }
-
-    public void setTechnologies(String technologies) {
-        this.technologies = technologies;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public Integer getDuration() {
         return duration;
     }
 
     public void setDuration(Integer duration) {
         this.duration = duration;
+    }
+
+    public Integer getStartYear() {
+        return startYear;
+    }
+
+    public void setStartYear(Integer startYear) {
+        this.startYear = startYear;
+    }
+
+    public Integer getStartMonth() {
+        return startMonth;
+    }
+
+    public void setStartMonth(Integer startMonth) {
+        this.startMonth = startMonth;
+    }
+
+    public Integer getFinishedYear() {
+        return finishedYear;
+    }
+
+    public void setFinishedYear(Integer finishedYear) {
+        this.finishedYear = finishedYear;
+    }
+
+    public Integer getFinishedMonth() {
+        return finishedMonth;
+    }
+
+    public void setFinishedMonth(Integer finishedMonth) {
+        this.finishedMonth = finishedMonth;
+    }
+
+    public String getTechnologies() { return technologies; }
+
+    public void setTechnologies(String technologies) { this.technologies = technologies; }
+
+    public Set<CategoriesModel> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<CategoriesModel> categories) {
+        this.categories = categories;
+    }
+
+    /*Service*/
+
+    @Service
+    public static class CourseService {
+        @Autowired
+        CourseRepository courseRepository;
+
+        public ArrayList<CourseModel> getCourses(){
+            return (ArrayList<CourseModel>) courseRepository.findAll();
+        }
+
+        public CourseModel saveCourses(CourseModel course){
+            return (CourseModel) courseRepository.save(course);
+        }
+
+        public Optional<CourseModel> getCourseById(Long id){
+            return courseRepository.findById(id);
+        }
+
+        public ArrayList<CourseModel> getCourseByTitle(String title){
+            return courseRepository.findByTitle(title);
+        }
+
+        public boolean deleteCourse(Long id){
+            try {
+                courseRepository.deleteById(id);
+                return true;
+            }catch (Exception err){
+                return false;
+            }
+        }
     }
 }
