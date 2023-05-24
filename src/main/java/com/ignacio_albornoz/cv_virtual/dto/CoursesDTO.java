@@ -26,7 +26,7 @@ public class CoursesDTO {
 
     private Set<CategoriesDTO> categories = new HashSet<>();
 
-    public CoursesDTO(CourseModel course) {
+   /* public CoursesDTO(CourseModel course) {
         this.id = course.getId();
         this.title = course.getTitle();
         this.description = course.getDescription();
@@ -42,7 +42,7 @@ public class CoursesDTO {
             CategoriesDTO categoryDTO = new CategoriesDTO(category);
             this.categories.add(categoryDTO);
         }
-    }
+    }*/
 
 
     /*Getters & Setters */

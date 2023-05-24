@@ -44,7 +44,26 @@ public class CourseController {
     public Optional<CoursesDTO> getCourseByIdDTO(@PathVariable("id") Long id) {
         Optional<CourseModel> courses = this.courseService.getCourseById(id);
         Optional<CoursesDTO> courseDTO = courses.map(course -> {
-            CoursesDTO dto = new CoursesDTO(course);
+            CoursesDTO dto = new CoursesDTO();
+            dto.setId(course.getId());
+            dto.setTitle(course.getTitle());
+            dto.setDescription(course.getDescription());
+            dto.setDuration(course.getDuration());
+            dto.setEstablishment(course.getEstablishment());
+            dto.setFinishedMonth(course.getFinishedMonth());
+            dto.setStartMonth(course.getStartMonth());
+
+
+            // ...
+            Set<CategoriesDTO> categories = new HashSet<>();
+            for (CategoriesModel category : course.getCategories()) {
+                CategoriesDTO categoryDTO = new CategoriesDTO();
+                categoryDTO.setId(category.getId());
+                categoryDTO.setTitle(category.getTitle());
+                categoryDTO.setDescription(category.getDescription());
+                categories.add(categoryDTO);
+            }
+            dto.setCategories(categories);
             return dto;
         });
 
