@@ -1,9 +1,17 @@
 package com.ignacio_albornoz.cv_virtual.dto;
 
+import com.ignacio_albornoz.cv_virtual.models.CategoriesModel;
+
 public class CategoriesDTO {
     private Long id;
     private String title;
     private String description;
+
+    public CategoriesDTO(CategoriesModel category) {
+        this.id = category.getId();
+        this.title = category.getTitle();
+        this.description = category.getDescription();
+    }
 
     public Long getId() {
         return id;

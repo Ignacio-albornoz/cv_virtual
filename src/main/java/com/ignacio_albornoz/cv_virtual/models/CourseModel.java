@@ -19,7 +19,7 @@ public class CourseModel {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "courses_categories",
             joinColumns = @JoinColumn(name = "course_id"),
