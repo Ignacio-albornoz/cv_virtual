@@ -1,7 +1,5 @@
 package com.ignacio_albornoz.cv_virtual.controller;
 
-import com.ignacio_albornoz.cv_virtual.dto.CategoriesDTO;
-import com.ignacio_albornoz.cv_virtual.models.CategoriesModel;
 import com.ignacio_albornoz.cv_virtual.models.CourseModel;
 import com.ignacio_albornoz.cv_virtual.dto.CoursesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +13,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/courses")
 public class CourseController {
     @Autowired
     CourseModel.CourseService courseService;
+
 
     @GetMapping()
     public List<CoursesDTO> getCourses() {
@@ -30,19 +30,17 @@ public class CourseController {
         return courseDTOs;
     }
 
-    /*public ArrayList<CourseModel> getCourses(){
-        return courseService.getCourses();
-    }*/
+    @GetMapping("/titles")
+    public List<String> getCourseTitles() {
+        return courseService.getCourseTitles();
+    }
+
 
     @PostMapping()
     public CourseModel saveCourse(@RequestBody CourseModel course){
         return this.courseService.saveCourses(course);
     }
-    /*
-    @GetMapping( path = "/{id}")
-    public Optional<CourseModel> getCourseById(@PathVariable("id") Long id){
-        return this.courseService.getCourseById(id);
-    }*/
+
 
     @GetMapping("/query")
     public ArrayList<CourseModel> getCourseByTitle(@RequestParam("title") String title){

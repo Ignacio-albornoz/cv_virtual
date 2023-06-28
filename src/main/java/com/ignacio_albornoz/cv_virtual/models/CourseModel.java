@@ -26,6 +26,13 @@ public class CourseModel {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<CategoriesModel> categories = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "courses_technologies",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "technologies_id"))
+    private Set<TechnologiesModel> technologies = new HashSet<>();
+
     @Column(unique = true, nullable = false)
     private String title;
     private String description;
@@ -39,7 +46,6 @@ public class CourseModel {
     @Column(name = "finished_month")
     private Integer finishedMonth;
     private String establishment;
-    private String technologies;
 
     /*Getters & Setters*/
 
@@ -111,16 +117,20 @@ public class CourseModel {
         this.finishedMonth = finishedMonth;
     }
 
-    public String getTechnologies() { return technologies; }
-
-    public void setTechnologies(String technologies) { this.technologies = technologies; }
-
     public Set<CategoriesModel> getCategories() {
         return categories;
     }
 
     public void setCategories(Set<CategoriesModel> categories) {
         this.categories = categories;
+    }
+
+    public Set<TechnologiesModel> getTechnologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(Set<TechnologiesModel> technologies) {
+        this.technologies = technologies;
     }
 
     /*Service*/
@@ -130,8 +140,13 @@ public class CourseModel {
         @Autowired
         CourseRepository courseRepository;
 
+
         public ArrayList<CourseModel> getCourses(){
             return (ArrayList<CourseModel>) courseRepository.findAll();
+        }
+
+        public ArrayList<String> getCourseTitles() {
+            return (ArrayList<String>) courseRepository.findCourseTitles();
         }
 
         public CourseModel saveCourses(CourseModel course){

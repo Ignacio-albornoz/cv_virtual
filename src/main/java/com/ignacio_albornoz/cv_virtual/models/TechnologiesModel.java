@@ -1,6 +1,6 @@
 package com.ignacio_albornoz.cv_virtual.models;
 
-import com.ignacio_albornoz.cv_virtual.repositories.CategoriesRepository;
+import com.ignacio_albornoz.cv_virtual.repositories.TechnologiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,14 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
-@Table(name = "categories")
-public class CategoriesModel {
-
+@Table(name = "technologies")
+public class TechnologiesModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
 
-    @ManyToMany(mappedBy = "categories")
+    @ManyToMany(mappedBy = "technologies")
     private Set<CourseModel> courses;
 
     @Column(unique = true, nullable = false)
@@ -54,33 +53,34 @@ public class CategoriesModel {
     }
 
     @Service
-    public static class CategoriesService {
+    public static class TechnologiesService {
         @Autowired
-        CategoriesRepository categoriesRepository;
+        TechnologiesRepository technologiesRepository;
 
-        public ArrayList<CategoriesModel> getCategories(){
-            return (ArrayList<CategoriesModel>) categoriesRepository.findAll();
+        public ArrayList<TechnologiesModel> getTechnologies(){
+            return (ArrayList<TechnologiesModel>) technologiesRepository.findAll();
         }
 
-        public CategoriesModel saveCategory(CategoriesModel category){
-            return (CategoriesModel) categoriesRepository.save(category);
+        public TechnologiesModel saveTechnologies(TechnologiesModel technology){
+            return (TechnologiesModel) technologiesRepository.save(technology);
         }
 
-        public Optional<CategoriesModel> getCategoriesById(Long id){
-            return categoriesRepository.findById(id);
+        public Optional<TechnologiesModel> getTechnologiesById(Long id){
+            return technologiesRepository.findById(id);
         }
 
-        public ArrayList<CategoriesModel> getCategoriesByTitle(String title){
-            return categoriesRepository.findByTitle(title);
+        public ArrayList<TechnologiesModel> getTechnologiesByTitle(String title){
+            return technologiesRepository.findByTitle(title);
         }
 
-        public boolean deleteCategory(Long id){
+        public boolean deleteTechnology(Long id){
             try {
-                categoriesRepository.deleteById(id);
+                technologiesRepository.deleteById(id);
                 return true;
             }catch (Exception err){
                 return false;
             }
         }
     }
+
 }

@@ -20,7 +20,7 @@ public class CategoriesController {
 
     @PostMapping()
     public CategoriesModel saveCategories(@RequestBody CategoriesModel category){
-        return this.categoriesService.saveCategories(category);
+        return this.categoriesService.saveCategory(category);
     }
 
     @GetMapping( path = "/{id}")

@@ -1,10 +1,10 @@
 package com.ignacio_albornoz.cv_virtual.dto;
 
-import com.ignacio_albornoz.cv_virtual.dto.CategoriesDTO;
 import com.ignacio_albornoz.cv_virtual.models.CategoriesModel;
+import com.ignacio_albornoz.cv_virtual.models.TechnologiesModel;
 import com.ignacio_albornoz.cv_virtual.models.CourseModel;
 
-import javax.persistence.Column;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,16 +13,13 @@ public class CoursesDTO {
     private String title;
     private String description;
     private Integer duration;
-    @Column(name = "start_year")
     private Integer startYear;
-    @Column(name = "start_month")
     private Integer startMonth;
-    @Column(name = "finished_year")
     private Integer finishedYear;
-    @Column(name = "finished_month")
     private Integer finishedMonth;
     private String establishment;
-    private String technologies;
+
+    private Set<TechnologiesDTO> technologies = new HashSet<>();
 
     private Set<CategoriesDTO> categories = new HashSet<>();
 
@@ -36,11 +33,14 @@ public class CoursesDTO {
         this.finishedYear = course.getFinishedYear();
         this.finishedMonth = course.getFinishedMonth();
         this.establishment = course.getEstablishment();
-        this.technologies = course.getTechnologies();
-
         for (CategoriesModel category : course.getCategories()) {
             CategoriesDTO categoryDTO = new CategoriesDTO(category);
             this.categories.add(categoryDTO);
+        }
+
+        for (TechnologiesModel technology : course.getTechnologies()) {
+            TechnologiesDTO technologyDTO = new TechnologiesDTO(technology);
+            this.technologies.add(technologyDTO);
         }
     }
 
@@ -119,11 +119,11 @@ public class CoursesDTO {
         this.establishment = establishment;
     }
 
-    public String getTechnologies() {
+    public Set<TechnologiesDTO> getTechnologies() {
         return technologies;
     }
 
-    public void setTechnologies(String technologies) {
+    public void setTechnologies(Set<TechnologiesDTO> technologies) {
         this.technologies = technologies;
     }
 
