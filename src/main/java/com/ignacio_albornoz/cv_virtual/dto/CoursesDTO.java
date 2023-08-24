@@ -3,6 +3,7 @@ package com.ignacio_albornoz.cv_virtual.dto;
 import com.ignacio_albornoz.cv_virtual.models.CategoriesModel;
 import com.ignacio_albornoz.cv_virtual.models.TechnologiesModel;
 import com.ignacio_albornoz.cv_virtual.models.CourseModel;
+import com.ignacio_albornoz.cv_virtual.models.UserModel;
 
 
 import java.util.HashSet;
@@ -42,7 +43,11 @@ public class CoursesDTO {
             TechnologiesDTO technologyDTO = new TechnologiesDTO(technology);
             this.technologies.add(technologyDTO);
         }
+
+
     }
+
+
 
 
     /*Getters & Setters */

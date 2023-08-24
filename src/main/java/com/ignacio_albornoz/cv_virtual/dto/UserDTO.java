@@ -1,31 +1,54 @@
 package com.ignacio_albornoz.cv_virtual.dto;
 
+import com.ignacio_albornoz.cv_virtual.models.CourseModel;
+import com.ignacio_albornoz.cv_virtual.models.SkillsModel;
 import com.ignacio_albornoz.cv_virtual.models.UserModel;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserDTO {
     private Long id;
     private String firstName;
     private String secondName;
     private String email;
+    private Long phone;
     private LocalDate birthdate;
-    private String skills;
-    private List<String> socialMedia;
     private String availability;
     private String additionalInformation;
+
+    private Set<String> skills = new HashSet<>();
+
+    private Set<CoursesDTO> courses = new HashSet<>();
+
+    private Set<Long> courseId = new HashSet<>();
 
     public UserDTO(UserModel user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.secondName = user.getSecondName();
         this.email = user.getEmail();
+        this.phone = user.getPhone();
         this.birthdate = user.getBirthdate();
-        this.skills = user.getSkills();
-        socialMedia = user.getSocialMedia();
         this.availability = user.getAvailability();
         this.additionalInformation = user.getAdditionalInformation();
+
+        for (SkillsModel skills : user.getSkills()) {
+            SkillsDTO skillsDTO = new SkillsDTO(skills);
+            this.skills.add(skillsDTO.getSkills());
+        }
+
+        /*for (CourseModel course : user.getCourses()) {
+            CoursesDTO coursesDTO = new CoursesDTO(course);
+            this.courses.add(coursesDTO);
+        }*/
+
+        for (CourseModel courses : user.getCourses()) {
+            CoursesDTO coursesDTO = new CoursesDTO(courses);
+            this.courseId.add(coursesDTO.getId());
+        }
+
     }
 
     public Long getId() {
@@ -60,6 +83,14 @@ public class UserDTO {
         this.email = email;
     }
 
+    public Long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
+
     public LocalDate getBirthdate() {
         return birthdate;
     }
@@ -68,20 +99,12 @@ public class UserDTO {
         this.birthdate = birthdate;
     }
 
-    public String getSkills() {
-        return skills;
+    public Set<Long> getCourseId() {
+        return courseId;
     }
 
-    public void setSkills(String skills) {
-        this.skills = skills;
-    }
-
-    public List<String> getSocialMedia() {
-        return socialMedia;
-    }
-
-    public void setSocialMedia(List<String> socialMedia) {
-        this.socialMedia = socialMedia;
+    public void setCourseId(Set<Long> courseId) {
+        this.courseId = courseId;
     }
 
     public String getAvailability() {
@@ -98,5 +121,21 @@ public class UserDTO {
 
     public void setAdditionalInformation(String additionalInformation) {
         this.additionalInformation = additionalInformation;
+    }
+
+    public Set<CoursesDTO> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<CoursesDTO> courses) {
+        this.courses = courses;
+    }
+
+    public Set<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<String> skills) {
+        this.skills = skills;
     }
 }

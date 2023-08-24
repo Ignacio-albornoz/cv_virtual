@@ -47,6 +47,13 @@ public class CourseController {
         return this.courseService.getCourseByTitle(title);
     }
 
+
+    @GetMapping( "userID/{id}")
+    public ArrayList<CourseModel> getCoursesByUserId(@PathVariable("id") Long id) {
+        ArrayList<CourseModel> courses = this.courseService.getCoursesByUserId(id);
+        return courses;
+    }
+
     @GetMapping(path = "/{id}")
     public Optional<CoursesDTO> getCourseByIdDTO(@PathVariable("id") Long id) {
         Optional<CourseModel> courses = this.courseService.getCourseById(id);

@@ -33,6 +33,9 @@ public class CourseModel {
             inverseJoinColumns = @JoinColumn(name = "technologies_id"))
     private Set<TechnologiesModel> technologies = new HashSet<>();
 
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
+    private Set<UserModel> users;
+
     @Column(unique = true, nullable = false)
     private String title;
     private String description;
@@ -133,6 +136,14 @@ public class CourseModel {
         this.technologies = technologies;
     }
 
+    public Set<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserModel> users) {
+        this.users = users;
+    }
+
     /*Service*/
 
     @Service
@@ -160,6 +171,8 @@ public class CourseModel {
         public ArrayList<CourseModel> getCourseByTitle(String title){
             return courseRepository.findByTitle(title);
         }
+
+        public ArrayList<CourseModel> getCoursesByUserId(Long id){ return courseRepository.findCoursesByUserId(id); }
 
         public boolean deleteCourse(Long id){
             try {
